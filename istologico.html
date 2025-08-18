@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Richiesta Esame Istologico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            margin: 30px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        #etichetta {
+            display: none;
+            margin-top: 30px;
+            background: white;
+            border: 2px dashed #333;
+            padding: 15px;
+            width: 320px;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+
+            #etichetta strong {
+                font-size: 16px;
+                text-transform: uppercase;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Richiesta Esame Istologico</h1>
+
+        <div class="card p-4 mb-4">
+            <form id="istologicoForm">
+
+                <!-- ANAGRAFICA -->
+                <h4 class="mb-3">Anagrafica Paziente</h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nome *</label>
+                        <input type="text" class="form-control" id="nome" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Cognome *</label>
+                        <input type="text" class="form-control" id="cognome" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Data di Nascita *</label>
+                        <input type="date" class="form-control" id="dataNascita" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Codice Fiscale *</label>
+                        <input type="text" class="form-control" id="cf" required>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- DATI ESAME -->
+                <h4 class="mb-3">Dati Esame</h4>
+                <div class="mb-3">
+                    <label class="form-label">Quesito Diagnostico *</label>
+                    <textarea class="form-control" id="quesito" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Anamnesi Patologica</label>
+                    <textarea class="form-control" id="anamnesi"></textarea>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Tipologia *</label>
+                        <select class="form-select" id="tipologia" required>
+                            <option value="">-- Seleziona --</option>
+                            <option>Occhio</option>
+                            <option>Braccio</option>
+                            <option>Gamba</option>
+                            <option>Mano</option>
+                            <option>Testa</option>
+                            <option>Cute</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Dettagli *</label>
+                        <select class="form-select" id="dettagli" required>
+                            <option value="">-- Seleziona --</option>
+                            <option>Mucosa</option>
+                            <option>Liquido</option>
+                            <option>Tessuto</option>
+                            <option>Frammento</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Telefono di Riferimento *</label>
+                        <input type="tel" class="form-control" id="telefono" placeholder="3331234567" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Medico Prescrivente *</label>
+                        <select class="form-select" id="medico" required>
+                            <option value="">-- Seleziona --</option>
+                            <option>Dr. Rossi</option>
+                            <option>Dr.ssa Bianchi</option>
+                            <option>Dr. Verdi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">💾 Salva e Stampa Etichetta</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="etichetta"></div>
+    </div>
+
+    <script>document.getElementById("istologicoForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      if(!this.checkValidity()){
+        alert("Compila tutti i campi obbligatori!");
+        return;
+      }
+
+      const dati = {
+        nome: document.getElementById("nome").value,
+        cognome: document.getElementById("cognome").value,
+        dataNascita: document.getElementById("dataNascita").value,
+        cf: document.getElementById("cf").value,
+        quesito: document.getElementById("quesito").value,
+        anamnesi: document.getElementById("anamnesi").value,
+        tipologia: document.getElementById("tipologia").value,
+        dettagli: document.getElementById("dettagli").value,
+        telefono: document.getElementById("telefono").value,
+        medico: document.getElementById("medico").value
+      };
+
+      localStorage.setItem("ultimaRichiesta", JSON.stringify(dati));
+
+      const etichettaDiv = document.getElementById("etichetta");
+      etichettaDiv.innerHTML = `
+        <strong>ISTOLOGIA</strong><br>
+        Paziente: ${dati.cognome} ${dati.nome}<br>
+        Nascita: ${dati.dataNascita}<br>
+        CF: ${dati.cf}<br>
+        Tipologia: ${dati.tipologia} - ${dati.dettagli}<br>
+        Medico: ${dati.medico}<br>
+        Tel: ${dati.telefono}<br>
+        Quesito: ${dati.quesito.substring(0,40)}...
+      `;
+      etichettaDiv.style.display = "block";
+
+      window.print();
+    });</script>
+
+</body>
+</html>

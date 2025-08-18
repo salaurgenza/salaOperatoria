@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduler Sale Operatorie</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        #timeline {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 300px;
+            border: 1px solid #000;
+            margin-top: 20px;
+        }
+
+        .bar {
+            position: absolute;
+            height: 30px;
+            color: #000;
+            text-align: center;
+            font-size: 11px;
+            line-height: 14px;
+            border-radius: 4px;
+            padding: 2px;
+        }
+
+        .legend {
+            margin-top: 10px;
+        }
+
+            .legend div {
+                display: inline-block;
+                margin-right: 15px;
+                padding: 5px;
+                border-radius: 4px;
+                color: #000;
+            }
+
+        .roomLabel {
+            position: absolute;
+            left: -80px;
+            width: 70px;
+            text-align: right;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Scheduler Sale Operatorie (8:00 - 20:00)</h2>
+
+    <p>
+        Inserisci i dati nel formato:<br>
+        <code>Nome Cognome, Specialità, DurataMinuti, Codice;</code>
+    </p>
+
+<textarea id="inputData" rows="6" cols="60">Stefano Pepe, Ortopedia, 120, Giallo;
+Maria Rossi, Chirurgia, 90, Verde;
+Luca Bianchi, Urologia, 60, Bianco;
+Anna Verdi, Ortopedia, 240, Rosso;
+Paolo Neri, Chirurgia, 180, Verde;
+</textarea>
+    <br>
+    <button onclick="processData()">Schedula Pazienti</button>
+
+    <div id="timeline"></div>
+
+    <div class="legend">
+        <div style="background-color:white;border:1px solid #000;">Bianco</div>
+        <div style="background-color:green;">Verde</div>
+        <div style="background-color:yellow;">Giallo</div>
+        <div style="background-color:red;">Rosso</div>
+    </div>
+
+    <script>// Parsing nuovo formato
+        function parseInput(inputText) {
+            const lines = inputText.split(';').map(l => l.trim()).filter(l => l.length > 0);
+            return lines.map(l => {
+                const [name, specialty, duration, code] = l.split(',').map(x => x.trim());
+                return { name, specialty, duration: parseInt(duration), code };
+            });
+        }
+
+        // Scheduler su N sale
+        function schedulePatients(patients, numRooms = 5, startHour = 8) {
+            const rooms = Array(numRooms).fill(startHour * 60);
+            return patients.map(patient => {
+                let roomIndex = rooms.indexOf(Math.min(...rooms));
+                let start = rooms[roomIndex];
+                let end = start + patient.duration;
+                rooms[roomIndex] = end;
+                return { ...patient, room: roomIndex + 1, start, end };
+            });
+        }
+
+        function processData() {
+            const inputText = document.getElementById('inputData').value;
+            const patients = parseInput(inputText);
+            const schedule = schedulePatients(patients);
+
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = ''; // reset
+
+            const totalMinutes = 12 * 60;
+
+            // Disegna righe e label sale
+            for (let r = 0; r < 5; r++) {
+                const roomLine = document.createElement('div');
+                roomLine.style.position = 'absolute';
+                roomLine.style.top = (r * 50 + 15) + 'px';
+                roomLine.style.left = '0';
+                roomLine.style.width = '100%';
+                roomLine.style.height = '1px';
+                roomLine.style.background = '#ccc';
+                timeline.appendChild(roomLine);
+
+                const label = document.createElement('div');
+                label.className = 'roomLabel';
+                label.style.top = (r * 50) + 'px';
+                label.innerText = "Sala " + (r + 1);
+                timeline.appendChild(label);
+            }
+
+            // Disegna barre pazienti
+            schedule.forEach(p => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.left = ((p.start - 8 * 60) / totalMinutes * 100) + '%';
+                bar.style.width = (p.duration / totalMinutes * 100) + '%';
+                bar.style.top = ((p.room - 1) * 50) + 'px';
+                bar.style.backgroundColor = p.code.toLowerCase();
+                bar.innerHTML = `<b>${p.name}</b><br>${p.specialty} (${p.duration}m)`;
+                timeline.appendChild(bar);
+            });
+
+            // scale orarie
+            for (let i = 0; i <= 12; i++) {
+                const mark = document.createElement('div');
+                mark.style.position = 'absolute';
+                mark.style.left = (i / 12 * 100) + '%';
+                mark.style.top = '0';
+                mark.style.height = '100%';
+                mark.style.borderLeft = '1px solid #eee';
+                timeline.appendChild(mark);
+
+                const label = document.createElement('div');
+                label.style.position = 'absolute';
+                label.style.left = (i / 12 * 100) + '%';
+                label.style.top = '260px';
+                label.style.transform = 'translateX(-50%)';
+                label.style.fontSize = '12px';
+                label.innerText = (8 + i) + ":00";
+                timeline.appendChild(label);
+            }
+        }</script>
+</body>
+</html>
