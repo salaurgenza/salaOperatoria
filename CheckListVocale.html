@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+
+    <title>Registro Operazioni</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .answerButton {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .green {
+            background-color: green;
+            color: white;
+        }
+
+        .red {
+            background-color: red;
+            color: white;
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 2.5rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+    </style>
+</head>
+
+<div align="center">
+    <h2>CHECKLIST PER LA SICUREZZA DI ATTIVITA' MEDICO CHIRURGICHE INVASIVE</h2>
+</div>
+<div class="col-md col-lg-3">
+    <img src="/Users/stefanopepe/Downloads/ProvaStrumenti/Resources/Images/logo gemelli.jpg" width="150" height="100" class="zoomable">
+</div>
+<tr>
+    <div>
+        <label for="nome">Nome e Cognome:</label>
+        <input type="text" id="nome" name="nome">
+        <label for="intervento">Intervento Chirurgico:</label>
+        <input type="text" id="intervento" name="intervento">
+        <label for="data">Data di Nascita:</label>
+        <input type="date" id="data" name="data">
+    </div>
+</tr>
+
+<body>
+    <form align="right" id="modulo">
+        <label for="note">Etichetta Paziente:</label><br><br>
+        <textarea id="note" rows="5" cols="20"></textarea>
+    </form>
+    <div class="b-example-divider"></div>
+    <div id="questions">
+        <table>
+            <thead>
+                <tr>
+                    <th>SIGN IN</th>
+                    <th>TIME OUT</th>
+                    <th>SIGN OUT</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    <!-- Colonna 1 -->
+                    <div class="question">
+                        <p>Hai controllato l'identità del paziente?</p>
+                        <button class="answerButton" onclick="risposta('si')">Sì</button>
+                        <button class="answerButton" onclick="risposta('no')">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Il sito intervento è stato marcato?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>I Controlli per la sicurezza dell'anestesia sono stati completati compreso la presenza del pulsossimetro?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Hai controllato se il paziente presenta allergie?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Il paziente presenta difficoltà di gestione delle vie aeree, rischi di aspirazione?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Il paziente presenta rischio di perdite ematiche che richieda la presenza di emocomponenti?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                </td>
+                <td>
+                    <!-- Colonna 2 -->
+                    <div class="question">
+                        <p>I nomi e i componenti dell'equipe chirurgica sono noti a tutti i componenti?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+
+                    <div class="question">
+                        <p>Il chirurgo ha informato l'equipe sulla durata dell intervento, rischi di perdite ematiche ed altre criticità?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>L'anestesista ha informato l'equipe sulla specificità del paziente, rischio asa?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>L'infermiere ha comunicato all'equipe la verifica della sterilità compresa la verifica degli indicatori, eventuali problemi dei dispositivi medici e altre criticità?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Le immagini diagnostiche sono state visualizzate?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>La profilassi antibiotica è stata somministrata?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>orario fine time-out?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                </td>
+                <td>
+                    <!-- Colonna 3 -->
+                    <div class="question">
+                        <p>Conferma che la procedura effettuata è stata registrata?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Verifica corretto conteggio di garze, aghi e altro strumentario</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Il campione chirurgico con relativa richiesta sono stati etichettati correttamente?</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Verifica e identificazione e segnalazione di problemi relativi dispositivi medici</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Chirurgo anestesista e infermiere hanno revisionato gli aspetti critici per l'assistenza post-operatoria</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                    <div class="question">
+                        <p>Verifica del piano del tromboembolismo post-operatorio</p>
+                        <button class="answerButton">Sì</button>
+                        <button class="answerButton">No</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <h3></h3>
+            <tr>
+                <label for="data">Data:</label>
+                <input type="date" id="data" name="data">
+                <h4></h4>
+                <td>Firma: <input align="right" type="text" id="firma"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>const columns = document.querySelectorAll('td');
+        const synth = window.speechSynthesis;
+
+        columns.forEach((column) => {
+            const questions = column.querySelectorAll('.question');
+            const answerButtons = column.querySelectorAll('.answerButton');
+
+            let pazienteOperabile = true; // Aggiungi variabile di controllo
+
+            questions.forEach((question, index) => {
+                const yesButton = answerButtons[index * 2];
+                const noButton = answerButtons[index * 2 + 1];
+
+                yesButton.addEventListener('click', () => {
+                    const answerText = document.createElement('p');
+                    answerText.textContent = "Il paziente può essere operato.";
+                    question.appendChild(answerText);
+                    speak("Il paziente può essere operato.");
+                });
+
+                noButton.addEventListener('click', () => {
+                    const answerText = document.createElement('p');
+                    answerText.textContent = "Il paziente non può essere operato.";
+                    question.appendChild(answerText);
+                    speak("Il paziente non può essere operato.");
+
+                    // Imposta lo stato del paziente su non operabile
+
+                    pazienteOperabile = false;
+
+                    // Blocca le domande successive
+                    if (!pazienteOperabile) {
+                        for (let i = index + 1; i < questions.length; i++) {
+                            const questionToDisable = questions[i];
+                            const answerButtonsToDisable = questionToDisable.querySelectorAll('.answerButton');
+                            questionToDisable.style.pointerEvents = "none";
+                            answerButtonsToDisable.forEach(button => {
+                                button.disabled = true;
+                            });
+                        }
+                    }
+                });
+            });
+        });
+       
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            synth.speak(utterance);
+        }</script>
+
+    <h5></h5>
+    <button id="generatePdfButton">Genera PDF</button>
+    <script>document.getElementById('generatePdfButton').addEventListener('click', function () {
+            const doc = new jsPDF();
+
+            // Definisci la larghezza delle colonne della tabella
+            const colWidth = 150;
+
+            // Ottieni tutte le celle della tabella
+            const cells = document.querySelectorAll('td');
+
+            // Posizione iniziale per la stampa
+            let xPos = 5;
+            let yPos = 5;
+
+            // Crea una variabile per tenere traccia della pagina corrente
+            let currentPage = 1;
+
+            cells.forEach(function (cell) {
+                // Aggiungi il contenuto della cella al PDF
+                doc.text(xPos, yPos, cell.innerText);
+
+                // Sposta l'origine del prossimo testo
+                xPos += colWidth;
+
+                // Se si è raggiunta la fine della pagina, passa alla pagina successiva
+                if (xPos + colWidth > 210) {
+                    xPos = 10;
+                    yPos = 10;
+                    doc.addPage();
+                    currentPage++;
+
+                }
+
+            });
+
+
+            // Salva il PDF
+
+            doc.save('CHECKLISTVOCALE.pdf');
+
+        });</script>
+
+</body>
+
+</html>
+
+
+
