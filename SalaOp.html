@@ -204,10 +204,10 @@
             </table>
         </div>
         <div class="offcanvas-footer border-top p-3 d-flex gap-2">
-            <a href="CheckListVocale.html" class="btn btn-primary" id="btnChecklist">
-  Checklist Vocale
-</a>
-           <button class="btn btn-outline-primary ms-auto" id="btnSavePDFDrawer">Salva PDF</button>
+            <button class="btn btn-success" id="btnCheckInDrawer">Check-List</button> <button class="btn btn-warning" id="btnTimeOutDrawer">Time-Out</button> <button class="btn btn-danger" id="btnSignOutDrawer">Sign-Out</button>
+            <button class="btn btn-outline-primary ms-auto" id="btnSavePDFDrawer">
+                Salva PDF
+            </button>
         </div>
         <div class="mb-3">
             <label for="drawerProcedure" class="form-label">Intervento eseguito</label>
@@ -375,7 +375,7 @@
                     tb.appendChild(tr);
                 });
 
-                document.getElementById("btnCheckInDrawer").onclick = () => { c.checkIn = new Date().toLocaleTimeString("it-IT"); window.location.href = "checkin.html"; };
+                document.getElementById("btnCheckInDrawer").onclick = () => { c.checkIn = new Date().toLocaleTimeString("it-IT"); window.location.href = "CheckListVocale.html"; };
                 document.getElementById("btnTimeOutDrawer").onclick = () => { c.timeOut = new Date().toLocaleTimeString("it-IT"); alert("Time-Out registrato"); renderCases(); };
                 document.getElementById("btnSignOutDrawer").onclick = () => { c.signOut = new Date().toLocaleTimeString("it-IT"); alert("Sign-Out registrato"); renderCases(); };
 
