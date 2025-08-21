@@ -239,8 +239,7 @@
                 Check-List
             </button>
 
-            <button class="btn btn-warning" id="btnTimeOutDrawer">Time-Out</button>
-            <button class="btn btn-danger" id="btnSignOutDrawer">Sign-Out</button>
+            <button class="btn btn-warning" id="btnTimeOutDrawer">Istologico</button>
             <button class="btn btn-outline-primary ms-auto" id="btnSavePDFDrawer">Salva PDF</button>
         </div>
     </div>
@@ -625,10 +624,8 @@
                 };
 
                 if (btnTimeOut) btnTimeOut.onclick = () => {
-                    c.timeOut = new Date().toLocaleTimeString("it-IT");
-                    alert("Time-Out registrato: " + c.timeOut);
-                    renderCases();
-                    window.showDrawer(c);
+                    // redirect alla pagina istologico.html
+                    window.location.href = "istologico.html";
                 };
 
                 if (btnSignOut) btnSignOut.onclick = () => {
